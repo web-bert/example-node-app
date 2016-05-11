@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{% block title %}Default Title{% endblock title %}</title>
+		<link rel="shortcut icon" href="/public/img/favicon.ico" type="image/ico">
+		<link rel="icon" href="/public/img/favicon.ico" type="image/ico">
+
+		{% block css %}
+
+		<!-- build:css(src) /public/css/app.min.css -->
+			<link rel="stylesheet" href="/public/css/base.css">
+		<!-- endbuild -->
+		{% endblock css %}
+	</head>
+	<body>
+
+		<div class="site-container">
+
+			{% block siteContent %}
+			{% endblock siteContent %}
+
+		</div>
+
+		{% block script %}
+		<!-- build:js(src) /public/js/app.min.js -->
+			<script src="/public/js/index.js"></script>
+		<!-- endbuild -->
+		{% endblock script %}
+
+		{% block pageScript %}
+		{% endblock pageScript %}
+	</body>
+</html>

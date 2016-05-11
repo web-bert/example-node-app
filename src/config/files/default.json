@@ -1,0 +1,12 @@
+{
+	"server": {
+		"protocol": "http",
+		"host": "localhost",
+		"port": 8080,
+		"workers": 1
+	},
+
+	"views": {
+		"cache": true
+	}
+}
