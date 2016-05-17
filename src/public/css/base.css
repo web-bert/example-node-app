@@ -1,3 +1,9 @@
 body {
 	background-color: #999;
 }
+
+.wifi-icon {
+	padding-left: 135px;
+	height: 128px;
+	background: transparent url( /public/img/wifi_icon.png ) 0 0 no-repeat;
+}
