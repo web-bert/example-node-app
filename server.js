@@ -5,7 +5,7 @@ var CHILD_EXIT_LIMIT = 5,
 	childProcess = require( 'child_process' ),
 	pkg = require( './package.json' ),
 
-	appFile = '/webapp/app.js',
+	appFile = '/app/app.js',
 	child,
 	childExits = [];
 

@@ -32,12 +32,12 @@ module.exports = function( grunt ){
 				]
 			},
 
-			webapp: {
+			app: {
 				files: [
 					{
 						expand: true,
 						cwd: 'src/',
-						src: [ 'webapp/**/*', '!**/*.jshintrc' ],
+						src: [ 'app/**/*', '!**/*.{js,es}hintrc' ],
 						dest: 'dist/'
 					}
 				]
@@ -48,18 +48,7 @@ module.exports = function( grunt ){
 					{
 						expand: true,
 						cwd: 'src/',
-						src: [ 'public/**/*', '!*/{css,js}/**', '!**/*.jshintrc', '!**/*.map' ],
-						dest: 'dist/'
-					}
-				]
-			},
-
-			config: {
-				files: [
-					{
-						expand: true,
-						cwd: 'src/',
-						src: [ 'config/config.json' ],
+						src: [ 'public/**/*', '!*/{css,js}/**', '!**/*.{js,es}hintrc', '!**/*.map' ],
 						dest: 'dist/'
 					}
 				]
@@ -67,11 +56,11 @@ module.exports = function( grunt ){
 		},
 
 		useminPrepare: {
-			html: 'dist/webapp/views/layout.html'
+			html: 'dist/app/views/layout.html'
 		},
 
 		usemin: {
-			html: 'dist/webapp/views/**/*.html',
+			html: 'dist/app/views/**/*.html',
 			js: 'dist/public/**/*.js',
 			css: 'dist/public/**/*.css',
 			options: {
@@ -92,87 +81,17 @@ module.exports = function( grunt ){
 			pub: {
 				src: [ 'dist/public/**/*' ]
 			}
-		},
-
-		extend: {
-			options: {
-				deep: true,
-				defaults: require( './src/config/files/default.json' )
-			},
-			production: {
-				files: {
-					'src/config/config.json': [ 'src/config/files/production.json' ]
-				}
-			}
 		}
 	});
 
 	require( 'load-grunt-tasks' )( grunt );
 
-	grunt.registerTask( 'config', 'Create a config file for the app', function( env ){
-
-		var isDev = ( !env || env === 'dev' );
-		var done;
-
-		if( isDev ){
-
-			done = this.async();
-
-			exec( 'whoami', function( err, stdout /*, stderr */ ){
-
-				var username = stdout.trim();
-
-				grunt.log.writeln( 'Adding ' + username + '.json to config for extend' );
-
-				grunt.config.merge( {
-					extend: {
-						development: {
-							files: {
-								'src/config/config.json': [ 'src/config/files/development.json', 'src/config/files/user/'+ username +'.json' ]
-							}
-						}
-					}
-				});
-
-				grunt.task.run( 'extend:development' );
-
-				done();
-			} );
-
-		} else {
-
-			grunt.task.run( 'extend:' + env );
-		}
-
-	} );
-
-	grunt.registerTask( 'allConfigs', 'Create separate config files for each env so they can be renamed when deployed', function(){
-
-		var envs = [
-			'production'
-		];
-
-		envs.forEach( function( env ){
-
-			var extend = {};
-			var taskName = 'file-' + env;
-
-			extend[ taskName ] = { files: {} };
-			extend[ taskName ].files[ 'src/config/env/' + env + '.json' ] = [ 'src/config/files/' + env + '.json' ];
-
-			grunt.config.merge( { extend: extend } );
-			grunt.task.run( 'extend:' + taskName );
-		} );
-	} );
-
 	grunt.registerTask( 'dist', [ 'default:dev' ] );
 
-	grunt.registerTask( 'default', 'Default prod build with optional config', function( configName ){
+	grunt.registerTask( 'default', 'Default prod build', function(){
 
 		grunt.task.run([
 			'clean',
-			'config:' + ( configName || 'production' ),
-			'allConfigs',
 			'copy',
 			'useminPrepare',
 			'concat:generated',

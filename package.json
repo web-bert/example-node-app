@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start",
-    "test-webapp": "JASMINE_CONFIG_PATH=src/test/webapp/jasmine.json jasmine",
+    "test-app": "JASMINE_CONFIG_PATH=src/test/app/jasmine.json jasmine",
     "start": "node server.js",
-    "app": "grunt config && node src/webapp/app.js",
-    "watch": "grunt config && nodemon src/webapp/app.js --ignore 'src/public/**/*'",
+    "app": "node src/app/app.js",
+    "watch": "nodemon src/app/app.js --ignore 'src/public/**/*'",
     "dist": "grunt dist && npm run dist-install && NODE_ENV=production node dist/server.js",
     "dist-install": "cd dist && npm install --production"
   },
@@ -32,11 +32,11 @@
     "express": "*",
     "morgan": "*",
     "serve-static": "*",
-    "swig": "*"
+    "nunjucks": "*"
   },
   "devDependencies": {
     "nodemon": "*",
-    "grunt": "~0.4",
+    "grunt": "*",
     "load-grunt-tasks": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-compress": "*",
@@ -44,7 +44,6 @@
     "grunt-contrib-copy": "*",
     "grunt-contrib-cssmin": "*",
     "grunt-contrib-uglify": "*",
-    "grunt-extend": "*",
     "grunt-filerev": "*",
     "grunt-mkdir": "*",
     "grunt-usemin": "*",

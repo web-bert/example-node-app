@@ -21,7 +21,7 @@ function startApp(){
 
 	var express = require( 'express' );
 	var routes = require( './routes' );
-	var swig = require( 'swig' );
+	var nunjucks = require( 'nunjucks' );
 	var serveStatic = require( 'serve-static' );
 	var path = require( 'path' );
 	var logger = require( 'morgan' );
@@ -32,19 +32,20 @@ function startApp(){
 	var env = app.get( 'env' );
 	var isDev = ( 'development' === env );
 
-	app.engine( 'html', swig.renderFile );
 	app.set( 'view engine', 'html' );
-	app.set( 'views', __dirname + '/views' );
-
 	app.set( 'view cache', config.views.cache );
-	// disable Swig's cache, and use express cache
-	swig.setDefaults( { cache: false } );
 
+	nunjucks.configure( ( __dirname + '/views' ), {
+		autoescape: true,
+		watch: config.isDev,
+		noCache: !config.views.cache,
+		express: app
+	} );
+
+	app.use( '/public', serveStatic( pathToPublic ) );
 	app.use( logger( ( isDev ? 'dev' : 'combined' ) ) );
 
 	routes( express, app );
-
-	app.use( '/public', serveStatic( pathToPublic ) );
 
 	var server = app.listen( serverConfig.port, function(){
 
