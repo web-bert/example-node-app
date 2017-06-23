@@ -3,14 +3,20 @@
   "version": "1.0.0",
   "description": "Skeleton for a node app",
   "main": "index.js",
+  "engines": {
+    "node": "6.10.2",
+    "npm": "3.10.10"
+  },
   "scripts": {
-    "test": "karma start",
-    "test-app": "JASMINE_CONFIG_PATH=src/test/app/jasmine.json jasmine",
-    "start": "node server.js",
-    "app": "node src/app/app.js",
+    "test": "JASMINE_CONFIG_PATH=src/test/app/jasmine.json jasmine",
+    "test-client": "karma start",
+    "start": "NODE_ENV=production node --use-strict dist/server.js",
+    "app": "node --use-strict src/app/app.js",
     "watch": "nodemon src/app/app.js --ignore 'src/public/**/*'",
-    "dist": "grunt dist && npm run dist-install && NODE_ENV=production node dist/server.js",
-    "dist-install": "cd dist && npm install --production"
+    "build:dist": "grunt dist && npm run dist-install",
+    "dist-install": "cd dist && npm install --production",
+    "dist": "npm run build:dist && npm run start",
+    "heroku-postbuild": "npm run build:dist"
   },
   "repository": {
     "type": "git",
@@ -52,5 +58,8 @@
     "karma": "*",
     "karma-chrome-launcher": "*",
     "karma-jasmine": "*"
+  },
+  "optionalDependencies": {
+    "fsevents": "*"
   }
 }
